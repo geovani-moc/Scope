@@ -1,0 +1,23 @@
+0 S V T
+1 V D V
+2 V D
+3 D int ID ;
+4 D long long int ID ;
+5 T A T
+6 T A
+7 A ID = E ;
+8 E E O
+9 E ID
+10 E NUM
+11 E STRING
+12 E ( E )
+13 O % E
+14 O / E
+15 O * E
+16 O + E
+17 O - E
+18 O < E
+19 O != E
+20 O == E
+21 O && E
+22 O || E

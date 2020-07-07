@@ -1,0 +1,27 @@
+int
+ID hoje
+;
+int
+ID amanha
+;
+long
+long
+int
+ID teste
+;
+ID hoje
+=
+NUM 12
++
+NUM 30
+;
+ID amanha
+=
+NUM 100
+;
+ID teste
+=
+ID hoje
+*
+ID amanha
+;

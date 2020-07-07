@@ -1,0 +1,50 @@
+int
+ID a
+;
+int
+ID b
+;
+long
+long
+int
+ID um_inteiro_longo
+;
+int
+ID x
+;
+ID a
+=
+NUM 10
++
+NUM 7
+*
+NUM 2
+;
+ID b
+=
+ID a
+*
+NUM 2
+<
+NUM 70
+;
+ID c
+=
+ID a
+%
+ID b
+<
+ID a
+/
+ID b
++
+NUM 10
+&&
+ID a
+==
+NUM 5
+||
+ID b
+==
+NUM 6
+;
