@@ -20,7 +20,6 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
             int derivationPosition = stoi(token.symbol);
             scopeTreatment(parserTree, derivationPosition, symbolTable);
             position++;
-            //return;
         }
         else if (declarationStart(derivation, position))
         {
@@ -40,7 +39,7 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
         else if (scopeEnd(derivation, position))
         {
             symbolTable.pop_back();
-            return;
+            position++;
         }
         else
         {
@@ -48,8 +47,6 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
             exit(EXIT_FAILURE);
         }
     }
-
-    return;
 }
 
 bool endOfTreatment(vector<Token> &derivation, int position)
@@ -111,13 +108,14 @@ int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token
         exit(EXIT_FAILURE);
     }
 
-    return positionID+2; //checar overflow
+    return positionID+2; 
+}
+
+bool scopeEnd(vector<Token> &derivation, int position)
+{
+    return derivation[position].symbol.compare("}") == 0;
 }
 
 void performOperation()
-{
-}
-
-bool scopeEnd()
 {
 }
