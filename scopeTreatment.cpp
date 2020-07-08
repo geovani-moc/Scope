@@ -3,11 +3,11 @@
 void scopeTreatment(vector<vector<Token>> &parserTree)
 {
     int root = (int)parserTree.size() - 1;
-    vector<map<string, void *>> symbolTable;
+    vector<map<string, Memorizer>> symbolTable;
     scopeTreatment(parserTree, root, symbolTable);
 }
 
-void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<string, void *>> &symbolTable)
+void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<string, Memorizer>> &symbolTable)
 {
     Token token;
     vector<Token> derivation = parserTree[root];
@@ -19,7 +19,8 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
         {
             int derivationPosition = stoi(token.symbol);
             scopeTreatment(parserTree, derivationPosition, symbolTable);
-            return;
+            position++;
+            //return;
         }
         else if (declarationStart(derivation, position))
         {
@@ -74,25 +75,35 @@ bool assignmentStart(vector<Token> &derivation, int position)
     return derivation[position].symbol.compare("ID") == 0;
 }
 
-void newScope(vector<map<string, void *>> symbolTable)
+void newScope(vector<map<string, Memorizer>> symbolTable)
 {
-    map<string, void *> newSymbolTable;
+    map<string, Memorizer> newSymbolTable;
     newSymbolTable = symbolTable.back();
     symbolTable.push_back(newSymbolTable);
 }
 
-int insertSymbolInTable(vector<map<string, void *>> symbolTable, vector<Token> &derivation)
+int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token> &derivation)
 {
     int positionID;
     if(derivation[0].symbol.compare("int") == 0)
     {
         positionID = 1;
-        symbolTable.back()[derivation[positionID].symbol] = malloc(sizeof(int));
+        Memorizer temporary;
+
+        temporary.pointerType = TYPE_INT;
+        temporary.pointer = malloc(sizeof(int));
+
+        symbolTable.back()[derivation[positionID].symbol] = temporary;
     }
     else if(derivation[0].symbol.compare("long") == 0)
     {
         positionID = 3;
-        symbolTable.back()[derivation[positionID].symbol] = malloc(sizeof(long long int));
+        Memorizer temporary;
+        
+        temporary.pointerType = TYPE_LL_INT;
+        temporary.pointer = malloc(sizeof(long long int));
+
+        symbolTable.back()[derivation[positionID].symbol] = temporary;
     }
     else
     {
