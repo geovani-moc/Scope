@@ -1,9 +1,0 @@
-int
-ID hoje
-;
-ID hoje
-=
-NUM 12
-+
-NUM 30
-;

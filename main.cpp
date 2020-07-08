@@ -4,6 +4,7 @@
 #include "transition.hpp"
 #include "rule.hpp"
 #include "token.hpp"
+#include "scopeTreatment.hpp"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ int main()
     //printTransition(transitions);
 
     vector<vector<Token>> parserTree = parser(tokens, rules, transitions);
+
+    //scopeTreatment(parserTree);
 
     return 0;
 }
