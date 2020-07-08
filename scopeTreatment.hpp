@@ -17,8 +17,8 @@ bool declarationStart(vector<Token> &derivation, int position);
 bool assignmentStart(vector<Token> &derivation, int position);
 bool scopeEnd(vector<Token> &derivation, int position);
 
-void newScope(vector<map<string, void *>> symbolTable)
-int insertSymbolInTable(vector<map<string, void *>> symbolTable, vector<Token> &derivation)
+void newScope(vector<map<string, void *>> symbolTable);
+int insertSymbolInTable(vector<map<string, void *>> symbolTable, vector<Token> &derivation);
 void performOperation();
 
 #endif
