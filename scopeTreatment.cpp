@@ -60,7 +60,7 @@ bool endOfTreatment(vector<Token> &derivation, int position)
 
 bool scopeStart(vector<Token> &derivation, int position)
 {
-    return derivation[position].symbol.compare("{") == 0
+    return derivation[position].symbol.compare("{") == 0;
 }
 
 bool declarationStart(vector<Token> &derivation, int position)
