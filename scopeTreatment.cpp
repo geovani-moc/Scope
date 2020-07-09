@@ -194,6 +194,129 @@ Memorizer operation(
     vector<vector<Token>> &parserTree, int position, 
     vector<map<string, Memorizer>> &symbolTable, Memorizer temporary)
 {
+    vector<Token> derivation = parserTree[position];
+    char option = derivation[0].symbol[0];
 
+    Memorizer temporary2 = expression(parserTree, position+1, symbolTable);
+
+    void *operating1 = temporary.pointer;
+    void *operating2 = temporary2.pointer;
+
+    switch (option)
+    {
+    case '%':        
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) %= (*(int*)operating2);
+        }
+        else
+        {
+            (*(long long int*)operating1) %= (*(long long int*)operating2);
+        }
+        break;
+    case '/':
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) /= (*(int*)operating2);
+        }
+        else
+        {
+            (*(long long int*)operating1) /= (*(long long int*)operating2);
+        }
+        
+        break;
+    case '*':
+    if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) *= (*(int*)operating2);
+        }
+        else
+        {
+            (*(long long int*)operating1) *= (*(long long int*)operating2);
+        }
+        
+        break;
+    case '+':
+    if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) += (*(int*)operating2);
+        }
+        else
+        {
+            (*(long long int*)operating1) += (*(long long int*)operating2);
+        }
+        
+        break;
+    case '-':
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) -= (*(int*)operating2);
+        }
+        else
+        {
+            (*(long long int*)operating1) -= (*(long long int*)operating2);
+        }
+        
+        break;
+    case '<':
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) = (int)((*(int*)operating1) < (*(int*)operating2));
+        }
+        else
+        {
+            (*(long long int*)operating1) = (int)((*(long long int*)operating1) < (*(long long int*)operating2));
+        }
+        
+        break;
+    case '!'://!=
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) = (int)((*(int*)operating1) != (*(int*)operating2));
+        }
+        else
+        {
+            (*(long long int*)operating1) = (int)((*(long long int*)operating1) != (*(long long int*)operating2));
+        }
+        break;
+    case '='://==
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) = (int)((*(int*)operating1) == (*(int*)operating2));
+        }
+        else
+        {
+            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) == (*(long long int*)operating2));
+        }
+        
+        break;
+    case '&'://&&
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) = (int)((*(int*)operating1) && (*(int*)operating2));
+        }
+        else
+        {
+            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) && (*(long long int*)operating2));
+        }
+        break;
+    case '|'://||
+        if (temporary.pointerType == TYPE_INT)
+        {
+            (*(int*)operating1) = (int)((*(int*)operating1) || (*(int*)operating2));
+        }
+        else
+        {
+            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) || (*(long long int*)operating2));
+        }
+        
+        break;
+    
+    default:
+        fprintf(stderr,"Erro: symbolo da operacao nao identificado.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    temporary.pointer = operating1;    
     return temporary;
 }
