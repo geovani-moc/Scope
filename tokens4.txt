@@ -1,0 +1,42 @@
+{
+int
+ID a
+;
+int
+ID b
+;
+int
+ID c
+;
+ID a
+=
+NUM 10
+;
+ID b
+=
+NUM 2
+*
+NUM 10
+;
+{
+int
+ID a
+;
+ID a
+=
+NUM 3
+;
+ID c
+=
+ID b
++
+ID a
+;
+}
+ID b
+=
+ID c
++
+ID a
+;
+}
