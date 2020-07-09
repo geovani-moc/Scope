@@ -11,7 +11,7 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
 {
     Token token;
     vector<Token> derivation = parserTree[root];
-    int position;
+    int position = 0;
 
     while (endOfTreatment(derivation, position))
     {
@@ -27,8 +27,7 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
         }
         else if (assignmentStart(derivation, position))
         {
-            //falta mais coisas nesse
-            performOperation();
+            performOperation(parserTree, derivation, position, symbolTable);
             return;
         }
         else if (scopeStart(derivation, position))
@@ -69,7 +68,11 @@ bool declarationStart(vector<Token> &derivation, int position)
 
 bool assignmentStart(vector<Token> &derivation, int position)
 {
-    return derivation[position].symbol.compare("ID") == 0;
+    if (position+1 > (int)derivation.size()) return false;
+    
+    return (derivation[position].symbol.compare("ID") == 0)
+            && (derivation[position+1].symbol.compare("=") == 0);
+
 }
 
 void newScope(vector<map<string, Memorizer>> symbolTable)
@@ -116,6 +119,81 @@ bool scopeEnd(vector<Token> &derivation, int position)
     return derivation[position].symbol.compare("}") == 0;
 }
 
-void performOperation()
+void performOperation(
+    vector<vector<Token>> &parserTree, 
+    vector<Token> &derivation, int position, 
+    vector<map<string, Memorizer>> &symbolTable)
 {
+    string symbol = derivation[position].symbol;
+   
+    if (!derivation[position+2].nonTerminal)
+    {
+        fprintf(stderr, "Erro: erro de sintaxe de atribuicao.\n");
+        exit(EXIT_FAILURE);
+    }
+    int positionDerivation = stoi(derivation[position+2].content);
+
+    symbolTable.back()[symbol] = expression(parserTree, positionDerivation, symbolTable);
+}
+
+Memorizer expression(vector<vector<Token>> &parserTree, int position, vector<map<string, Memorizer>> &symbolTable)
+{
+    Memorizer temporary;
+    vector<Token> derivation = parserTree[position];
+
+    position = 0;
+    int size = (int) derivation.size();
+
+    switch (size)
+    {
+    case 1:// NUM , ID, STRING
+        if(derivation[position].symbol.compare("NUM") == 0)
+        {
+            temporary.pointerType = TYPE_INT;
+            void* temporaryInt = malloc(sizeof(int));
+            (*(int*)temporaryInt) = stoi(derivation[position].content);
+            temporary.pointer = temporaryInt;           
+
+            return temporary; 
+        }
+        else if(derivation[position].content.compare("ID") == 0)
+        {
+            string symbol = derivation[position].content;
+            temporary = symbolTable.back()[symbol];
+
+            return temporary;
+        }
+        else if(derivation[position].content.compare("STRING") == 0)
+        {
+            fprintf(stderr, "Erro: tentativa de atribuir uma strig a um inteiro.\n");
+            exit(EXIT_FAILURE);
+        }
+        break;
+
+    case 2:// EO
+        position = stoi(derivation[position].content);
+        temporary = expression(parserTree, position, symbolTable);
+        return operation(parserTree, position+1, symbolTable, temporary);
+
+        break;
+
+    case 3:// (E)
+        position++;
+        position = stoi(derivation[position].content);
+        return expression(parserTree,position, symbolTable);
+        
+        break;
+    
+    default:
+        fprintf(stderr, "Erro: expressao nao esperada.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+Memorizer operation(
+    vector<vector<Token>> &parserTree, int position, 
+    vector<map<string, Memorizer>> &symbolTable, Memorizer temporary)
+{
+
+    return temporary;
 }

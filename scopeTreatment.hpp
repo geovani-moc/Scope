@@ -28,6 +28,13 @@ bool scopeEnd(vector<Token> &derivation, int position);
 
 void newScope(vector<map<string, Memorizer>> symbolTable);
 int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token> &derivation);
-void performOperation();
-
+void performOperation(
+    vector<vector<Token>> &parserTree, 
+    vector<Token> &derivation, int position, 
+    vector<map<string, Memorizer>> &symbolTable);
+Memorizer expression(vector<vector<Token>> &parserTree, int position,vector<map<string, Memorizer>> &symbolTable);
+Memorizer operation(
+    vector<vector<Token>> &parserTree, int position,
+    vector<map<string, Memorizer>> &symbolTable, 
+    Memorizer temporary);
 #endif
