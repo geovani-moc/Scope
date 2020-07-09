@@ -7,7 +7,8 @@ void scopeTreatment(vector<vector<Token>> &parserTree)
     scopeTreatment(parserTree, root, symbolTable);
 }
 
-void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<string, Memorizer>> &symbolTable)
+void scopeTreatment(vector<vector<Token>> &parserTree, int root,
+                    vector<map<string, Memorizer>> &symbolTable)
 {
     Token token;
     vector<Token> derivation = parserTree[root];
@@ -51,7 +52,7 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root, vector<map<stri
 bool endOfTreatment(vector<Token> &derivation, int position)
 {
     int size = (int)derivation.size();
-    
+
     return (position < size);
 }
 
@@ -62,17 +63,17 @@ bool scopeStart(vector<Token> &derivation, int position)
 
 bool declarationStart(vector<Token> &derivation, int position)
 {
-    return ((derivation[position].symbol.compare("int") == 0) || 
-    (derivation[position].symbol.compare("long") == 0));
+    return ((derivation[position].symbol.compare("int") == 0) ||
+            (derivation[position].symbol.compare("long") == 0));
 }
 
 bool assignmentStart(vector<Token> &derivation, int position)
 {
-    if (position+1 > (int)derivation.size()) return false;
-    
-    return (derivation[position].symbol.compare("ID") == 0)
-            && (derivation[position+1].symbol.compare("=") == 0);
+    if (position + 1 > (int)derivation.size())
+        return false;
 
+    return (derivation[position].symbol.compare("ID") == 0) &&
+           (derivation[position + 1].symbol.compare("=") == 0);
 }
 
 void newScope(vector<map<string, Memorizer>> symbolTable)
@@ -85,7 +86,7 @@ void newScope(vector<map<string, Memorizer>> symbolTable)
 int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token> &derivation)
 {
     int positionID;
-    if(derivation[0].symbol.compare("int") == 0)
+    if (derivation[0].symbol.compare("int") == 0)
     {
         positionID = 1;
         Memorizer temporary;
@@ -95,11 +96,11 @@ int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token
 
         symbolTable.back()[derivation[positionID].symbol] = temporary;
     }
-    else if(derivation[0].symbol.compare("long") == 0)
+    else if (derivation[0].symbol.compare("long") == 0)
     {
         positionID = 3;
         Memorizer temporary;
-        
+
         temporary.pointerType = TYPE_LL_INT;
         temporary.pointer = malloc(sizeof(long long int));
 
@@ -111,7 +112,7 @@ int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token
         exit(EXIT_FAILURE);
     }
 
-    return positionID+2; 
+    return positionID + 2;
 }
 
 bool scopeEnd(vector<Token> &derivation, int position)
@@ -120,70 +121,77 @@ bool scopeEnd(vector<Token> &derivation, int position)
 }
 
 void performOperation(
-    vector<vector<Token>> &parserTree, 
-    vector<Token> &derivation, int position, 
+    vector<vector<Token>> &parserTree,
+    vector<Token> &derivation, int position,
     vector<map<string, Memorizer>> &symbolTable)
 {
     string symbol = derivation[position].symbol;
-   
-    if (!derivation[position+2].nonTerminal)
+
+    if (!derivation[position + 2].nonTerminal)
     {
         fprintf(stderr, "Erro: erro de sintaxe de atribuicao.\n");
         exit(EXIT_FAILURE);
     }
-    int positionDerivation = stoi(derivation[position+2].content);
+    int positionDerivation = stoi(derivation[position + 2].content);
 
     symbolTable.back()[symbol] = expression(parserTree, positionDerivation, symbolTable);
 }
 
-Memorizer expression(vector<vector<Token>> &parserTree, int position, vector<map<string, Memorizer>> &symbolTable)
+Memorizer expression(vector<vector<Token>> &parserTree, int position,
+                     vector<map<string, Memorizer>> &symbolTable)
 {
     Memorizer temporary;
+    if(position < 0 || position > (int)parserTree.size())
+    {
+        fprintf(stderr, "Erro: posicao da derivacao de expressao errado.\n");
+        exit(EXIT_FAILURE);
+    }
+    
     vector<Token> derivation = parserTree[position];
 
     position = 0;
-    int size = (int) derivation.size();
+    int size = (int)derivation.size();
 
     switch (size)
     {
-    case 1:// NUM , ID, STRING
-        if(derivation[position].symbol.compare("NUM") == 0)
+    case 1: // NUM , ID, STRING
+        if (derivation[position].symbol.compare("NUM") == 0)
         {
             temporary.pointerType = TYPE_INT;
-            void* temporaryInt = malloc(sizeof(int));
-            (*(int*)temporaryInt) = stoi(derivation[position].content);
-            temporary.pointer = temporaryInt;           
+            void *temporaryInt = malloc(sizeof(int));
+            (*(int *)temporaryInt) = stoi(derivation[position].content);
+            temporary.pointer = temporaryInt;
 
-            return temporary; 
+            return temporary;
         }
-        else if(derivation[position].content.compare("ID") == 0)
+        else if (derivation[position].content.compare("ID") == 0)
         {
             string symbol = derivation[position].content;
             temporary = symbolTable.back()[symbol];
 
             return temporary;
         }
-        else if(derivation[position].content.compare("STRING") == 0)
+        else if (derivation[position].content.compare("STRING") == 0)
         {
             fprintf(stderr, "Erro: tentativa de atribuir uma strig a um inteiro.\n");
             exit(EXIT_FAILURE);
         }
         break;
 
-    case 2:// EO
+    case 2: // EO
         position = stoi(derivation[position].content);
         temporary = expression(parserTree, position, symbolTable);
-        return operation(parserTree, position+1, symbolTable, temporary);
+        return operation(parserTree, position + 1, symbolTable, temporary);
 
         break;
 
-    case 3:// (E)
+    case 3: // (E)
         position++;
         position = stoi(derivation[position].content);
-        return expression(parserTree,position, symbolTable);
-        
+        return expression(parserTree, position, symbolTable);
+
         break;
-    
+
     default:
         fprintf(stderr, "Erro: expressao nao esperada.\n");
         exit(EXIT_FAILURE);
@@ -191,132 +199,137 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position, vector<map
 }
 
 Memorizer operation(
-    vector<vector<Token>> &parserTree, int position, 
+    vector<vector<Token>> &parserTree, int position,
     vector<map<string, Memorizer>> &symbolTable, Memorizer temporary)
 {
     vector<Token> derivation = parserTree[position];
     char option = derivation[0].symbol[0];
 
-    Memorizer temporary2 = expression(parserTree, position+1, symbolTable);
+    Memorizer temporary2 = expression(parserTree, position + 1, symbolTable);
 
     void *operating1 = temporary.pointer;
     void *operating2 = temporary2.pointer;
 
     switch (option)
     {
-    case '%':        
+    case '%':
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) %= (*(int*)operating2);
+            (*(int *)operating1) %= (*(int *)operating2);
         }
         else
         {
-            (*(long long int*)operating1) %= (*(long long int*)operating2);
+            (*(long long int *)operating1) %= (*(long long int *)operating2);
         }
         break;
     case '/':
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) /= (*(int*)operating2);
+            (*(int *)operating1) /= (*(int *)operating2);
         }
         else
         {
-            (*(long long int*)operating1) /= (*(long long int*)operating2);
+            (*(long long int *)operating1) /= (*(long long int *)operating2);
         }
-        
+
         break;
     case '*':
-    if (temporary.pointerType == TYPE_INT)
+        if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) *= (*(int*)operating2);
+            (*(int *)operating1) *= (*(int *)operating2);
         }
         else
         {
-            (*(long long int*)operating1) *= (*(long long int*)operating2);
+            (*(long long int *)operating1) *= (*(long long int *)operating2);
         }
-        
+
         break;
     case '+':
-    if (temporary.pointerType == TYPE_INT)
+        if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) += (*(int*)operating2);
+            (*(int *)operating1) += (*(int *)operating2);
         }
         else
         {
-            (*(long long int*)operating1) += (*(long long int*)operating2);
+            (*(long long int *)operating1) += (*(long long int *)operating2);
         }
-        
+
         break;
     case '-':
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) -= (*(int*)operating2);
+            (*(int *)operating1) -= (*(int *)operating2);
         }
         else
         {
-            (*(long long int*)operating1) -= (*(long long int*)operating2);
+            (*(long long int *)operating1) -= (*(long long int *)operating2);
         }
-        
+
         break;
     case '<':
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) = (int)((*(int*)operating1) < (*(int*)operating2));
+            (*(int *)operating1) = (int)((*(int *)operating1) < (*(int *)operating2));
         }
         else
         {
-            (*(long long int*)operating1) = (int)((*(long long int*)operating1) < (*(long long int*)operating2));
+            (*(long long int *)operating1) =
+                (int)((*(long long int *)operating1) < (*(long long int *)operating2));
         }
-        
+
         break;
-    case '!'://!=
+    case '!': //!=
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) = (int)((*(int*)operating1) != (*(int*)operating2));
+            (*(int *)operating1) = (int)((*(int *)operating1) != (*(int *)operating2));
         }
         else
         {
-            (*(long long int*)operating1) = (int)((*(long long int*)operating1) != (*(long long int*)operating2));
+            (*(long long int *)operating1) =
+                (int)((*(long long int *)operating1) != (*(long long int *)operating2));
         }
         break;
-    case '='://==
+    case '=': //==
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) = (int)((*(int*)operating1) == (*(int*)operating2));
+            (*(int *)operating1) = (int)((*(int *)operating1) == (*(int *)operating2));
         }
         else
         {
-            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) == (*(long long int*)operating2));
+            (*(long long int *)operating1) =
+                (long long int)((*(long long int *)operating1) == (*(long long int *)operating2));
         }
-        
+
         break;
-    case '&'://&&
+    case '&': //&&
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) = (int)((*(int*)operating1) && (*(int*)operating2));
+            (*(int *)operating1) = (int)((*(int *)operating1) && (*(int *)operating2));
         }
         else
         {
-            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) && (*(long long int*)operating2));
+            (*(long long int *)operating1) =
+                (long long int)((*(long long int *)operating1) && (*(long long int *)operating2));
         }
         break;
-    case '|'://||
+    case '|': //||
         if (temporary.pointerType == TYPE_INT)
         {
-            (*(int*)operating1) = (int)((*(int*)operating1) || (*(int*)operating2));
+            (*(int *)operating1) = (int)((*(int *)operating1) || (*(int *)operating2));
         }
         else
         {
-            (*(long long int*)operating1) = (long long int)((*(long long int*)operating1) || (*(long long int*)operating2));
+            (*(long long int *)operating1) =
+                (long long int)((*(long long int *)operating1) || (*(long long int *)operating2));
         }
-        
+
         break;
-    
+
     default:
-        fprintf(stderr,"Erro: symbolo da operacao nao identificado.\n");
+        fprintf(stderr, "Erro: symbolo da operacao nao identificado.\n");
         exit(EXIT_FAILURE);
     }
 
-    temporary.pointer = operating1;    
+    temporary.pointer = operating1;
     return temporary;
 }

@@ -27,7 +27,7 @@ int main()
 
     vector<vector<Token>> parserTree = parser(tokens, rules, transitions);
 
-    //scopeTreatment(parserTree);
+    scopeTreatment(parserTree);
 
     return 0;
 }
