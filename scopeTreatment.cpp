@@ -182,8 +182,8 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
         break;
 
     case 2: // EO
-        position = stoi(derivation[position].content);
-        temporary = expression(parserTree, position, symbolTable);
+        position = stoi(derivation[position+1].content);
+        temporary = expression(parserTree, position+1, symbolTable);
         return operation(parserTree, position + 1, symbolTable, temporary);
 
         break;
