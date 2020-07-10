@@ -140,11 +140,6 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
                      vector<map<string, Memorizer>> &symbolTable)
 {
     Memorizer temporary;
-    if (position < 0 || position > (int)parserTree.size())
-    {
-        fprintf(stderr, "Erro: posicao da derivacao de expressao errado.\n");
-        exit(EXIT_FAILURE);
-    }
 
     vector<Token> derivation = parserTree[position];
 
@@ -195,6 +190,8 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
         fprintf(stderr, "Erro: expressao nao esperada.\n");
         exit(EXIT_FAILURE);
     }
+
+    return temporary;
 }
 
 Memorizer operation(
