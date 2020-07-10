@@ -141,12 +141,12 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
                      vector<map<string, Memorizer>> &symbolTable)
 {
     Memorizer temporary;
-    if(position < 0 || position > (int)parserTree.size())
+    if (position < 0 || position > (int)parserTree.size())
     {
         fprintf(stderr, "Erro: posicao da derivacao de expressao errado.\n");
         exit(EXIT_FAILURE);
     }
-    
+
     vector<Token> derivation = parserTree[position];
 
     position = 0;
@@ -207,122 +207,49 @@ Memorizer operation(
 
     Memorizer temporary2 = expression(parserTree, position + 1, symbolTable);
 
-    void *operating1 = temporary.pointer;
-    void *operating2 = temporary2.pointer;
+    long long int operating1;
+    long long int operating2;
+
+    if (temporary.pointerType == TYPE_INT)
+        operating1 = (long long int)(*(int *)temporary.pointer);
+    else
+        operating1 = (*(long long int *)temporary.pointer);
+
+    if (temporary2.pointerType == TYPE_INT)
+        operating2 = (long long int)(*(int *)temporary2.pointer);
+    else
+        operating2 = (*(long long int *)temporary2.pointer);
 
     switch (option)
     {
     case '%':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) %= (*(int *)operating2);
-        }
-        else
-        {
-            (*(long long int *)operating1) %= (*(long long int *)operating2);
-        }
+        operating1 %= operating2;
         break;
     case '/':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) /= (*(int *)operating2);
-        }
-        else
-        {
-            (*(long long int *)operating1) /= (*(long long int *)operating2);
-        }
-
+        operating1 /= operating2;
         break;
     case '*':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) *= (*(int *)operating2);
-        }
-        else
-        {
-            (*(long long int *)operating1) *= (*(long long int *)operating2);
-        }
-
+        operating1 *= operating2;
         break;
     case '+':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) += (*(int *)operating2);
-        }
-        else
-        {
-            (*(long long int *)operating1) += (*(long long int *)operating2);
-        }
-
+        operating1 += operating2;
         break;
     case '-':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) -= (*(int *)operating2);
-        }
-        else
-        {
-            (*(long long int *)operating1) -= (*(long long int *)operating2);
-        }
-
+        operating1 -= operating2;
         break;
     case '<':
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) = (int)((*(int *)operating1) < (*(int *)operating2));
-        }
-        else
-        {
-            (*(long long int *)operating1) =
-                (int)((*(long long int *)operating1) < (*(long long int *)operating2));
-        }
-
+        operating1 = (operating1 < operating2);
         break;
     case '!': //!=
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) = (int)((*(int *)operating1) != (*(int *)operating2));
-        }
-        else
-        {
-            (*(long long int *)operating1) =
-                (int)((*(long long int *)operating1) != (*(long long int *)operating2));
-        }
-        break;
+        operating1 = (operating1 != operating2);
     case '=': //==
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) = (int)((*(int *)operating1) == (*(int *)operating2));
-        }
-        else
-        {
-            (*(long long int *)operating1) =
-                (long long int)((*(long long int *)operating1) == (*(long long int *)operating2));
-        }
-
+        operating1 = (operating1 == operating2);
         break;
     case '&': //&&
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) = (int)((*(int *)operating1) && (*(int *)operating2));
-        }
-        else
-        {
-            (*(long long int *)operating1) =
-                (long long int)((*(long long int *)operating1) && (*(long long int *)operating2));
-        }
+        operating1 = (operating1 && operating2);
         break;
     case '|': //||
-        if (temporary.pointerType == TYPE_INT)
-        {
-            (*(int *)operating1) = (int)((*(int *)operating1) || (*(int *)operating2));
-        }
-        else
-        {
-            (*(long long int *)operating1) =
-                (long long int)((*(long long int *)operating1) || (*(long long int *)operating2));
-        }
-
+        operating1 = (operating1 || operating2);
         break;
 
     default:
@@ -330,6 +257,14 @@ Memorizer operation(
         exit(EXIT_FAILURE);
     }
 
-    temporary.pointer = operating1;
+    if (temporary.pointerType == TYPE_INT)
+    {
+        (*(int *)(temporary.pointer)) = (int)operating1;
+    }
+    else
+    {
+        (*(long long int *)(temporary.pointer)) = operating1;
+    }
+
     return temporary;
 }
