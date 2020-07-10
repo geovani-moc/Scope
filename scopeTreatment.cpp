@@ -78,7 +78,12 @@ bool assignmentStart(vector<Token> &derivation, int position)
 void newScope(vector<map<string, Memorizer>> symbolTable)
 {
     map<string, Memorizer> newSymbolTable;
-    newSymbolTable = symbolTable.back();
+    
+    if (symbolTable.size() > 0)
+    {
+        newSymbolTable = symbolTable.back();
+    }
+        
     symbolTable.push_back(newSymbolTable);
 }
 
