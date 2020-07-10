@@ -53,6 +53,8 @@ vector<vector<Token>> parser(vector<Token> &tokens, vector<Rule> &rules, vector<
             
             stack.push_back(currentRule.symbol);
             stack.back().nonTerminal = true;
+
+            reverse(temporary.begin(), temporary.end());
             
             parserTree.push_back(temporary);
             stack.back().content = to_string(((int)parserTree.size())-1);
@@ -80,6 +82,7 @@ vector<vector<Token>> parser(vector<Token> &tokens, vector<Rule> &rules, vector<
         temporary.push_back( stack.back());
         stack.pop_back();
     }
+    reverse(temporary.begin(), temporary.end());
     parserTree.push_back(temporary);
 
     token = currentRule.symbol;
