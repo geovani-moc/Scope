@@ -27,8 +27,8 @@ bool declarationStart(vector<Token> &derivation, int position);
 bool assignmentStart(vector<Token> &derivation, int position);
 bool scopeEnd(vector<Token> &derivation, int position);
 
-void newScope(vector<map<string, Memorizer>> symbolTable);
-int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token> &derivation);
+void newScope(vector<map<string, Memorizer>> &symbolTable);
+int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Token> &derivation);
 void performOperation(
     vector<vector<Token>> &parserTree,
     vector<Token> &derivation, int position,

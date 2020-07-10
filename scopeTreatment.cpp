@@ -75,10 +75,10 @@ bool assignmentStart(vector<Token> &derivation, int position)
            (derivation[position + 1].symbol.compare("=") == 0);
 }
 
-void newScope(vector<map<string, Memorizer>> symbolTable)
+void newScope(vector<map<string, Memorizer>> &symbolTable)
 {
     map<string, Memorizer> newSymbolTable;
-    
+
     if (symbolTable.size() > 0)
     {
         newSymbolTable = symbolTable.back();
@@ -87,9 +87,11 @@ void newScope(vector<map<string, Memorizer>> symbolTable)
     symbolTable.push_back(newSymbolTable);
 }
 
-int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token> &derivation)
+int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Token> &derivation)
 {
     int positionID;
+    string VariableName;
+
     if (derivation[0].symbol.compare("int") == 0)
     {
         positionID = 1;
@@ -98,7 +100,8 @@ int insertSymbolInTable(vector<map<string, Memorizer>> symbolTable, vector<Token
         temporary.pointerType = TYPE_INT;
         temporary.pointer = malloc(sizeof(int));
 
-        symbolTable.back()[derivation[positionID].symbol] = temporary;
+        VariableName = derivation[positionID].content;
+        symbolTable.back()[VariableName] = temporary;        
     }
     else if (derivation[0].symbol.compare("long") == 0)
     {
