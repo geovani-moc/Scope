@@ -10,15 +10,14 @@ void scopeTreatment(vector<vector<Token>> &parserTree)
 void scopeTreatment(vector<vector<Token>> &parserTree, int root,
                     vector<map<string, Memorizer>> &symbolTable)
 {
-    Token token;
     vector<Token> derivation = parserTree[root];
     int position = 0;
 
     while (endOfTreatment(derivation, position))
     {
-        if (token.nonTerminal)
+        if (derivation[position].nonTerminal)
         {
-            int derivationPosition = stoi(token.symbol);
+            int derivationPosition = stoi(derivation[position].symbol);
             scopeTreatment(parserTree, derivationPosition, symbolTable);
             position++;
         }

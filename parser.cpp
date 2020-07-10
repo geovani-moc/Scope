@@ -73,7 +73,7 @@ vector<vector<Token>> parser(vector<Token> &tokens, vector<Rule> &rules, vector<
         }
     }
 
-    //reducao s->VT$.
+    //reducao B->{VT}$.
     currentRule = seekRule(0, rules);
     temporary.clear();
 
