@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-    const char *fileTokens = "tokens3.txt";
+    const char *fileTokens = "tokens.txt";
     const char *fileRules = "rules.txt";
     const char *fileTransitions = "transitions.txt";
 
