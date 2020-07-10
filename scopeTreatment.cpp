@@ -17,7 +17,7 @@ void scopeTreatment(vector<vector<Token>> &parserTree, int root,
     {
         if (derivation[position].nonTerminal)
         {
-            int derivationPosition = stoi(derivation[position].symbol);
+            int derivationPosition = stoi(derivation[position].content);
             scopeTreatment(parserTree, derivationPosition, symbolTable);
             position++;
         }
