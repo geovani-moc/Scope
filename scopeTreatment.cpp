@@ -90,7 +90,7 @@ void newScope(vector<map<string, Memorizer>> &symbolTable)
 int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Token> &derivation)
 {
     int positionID;
-    string VariableName;
+    string variableName = derivation[positionID].content;
 
     if (derivation[0].symbol.compare("int") == 0)
     {
@@ -100,8 +100,7 @@ int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Toke
         temporary.pointerType = TYPE_INT;
         temporary.pointer = malloc(sizeof(int));
 
-        VariableName = derivation[positionID].content;
-        symbolTable.back()[VariableName] = temporary;        
+        symbolTable.back()[variableName] = temporary;        
     }
     else if (derivation[0].symbol.compare("long") == 0)
     {
@@ -111,7 +110,7 @@ int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Toke
         temporary.pointerType = TYPE_LL_INT;
         temporary.pointer = malloc(sizeof(long long int));
 
-        symbolTable.back()[derivation[positionID].symbol] = temporary;
+        symbolTable.back()[variableName] = temporary;
     }
     else
     {
@@ -132,7 +131,7 @@ void performOperation(
     vector<Token> &derivation, int position,
     vector<map<string, Memorizer>> &symbolTable)
 {
-    string symbol = derivation[position].symbol;
+    string variableName = derivation[position].content;
 
     if (!derivation[position + 2].nonTerminal)
     {
@@ -141,7 +140,7 @@ void performOperation(
     }
     int positionDerivation = stoi(derivation[position + 2].content);
 
-    symbolTable.back()[symbol] = expression(parserTree, positionDerivation, symbolTable);
+    symbolTable.back()[variableName] = expression(parserTree, positionDerivation, symbolTable);
 }
 
 Memorizer expression(vector<vector<Token>> &parserTree, int position,
