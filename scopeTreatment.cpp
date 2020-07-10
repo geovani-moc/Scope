@@ -90,7 +90,7 @@ void newScope(vector<map<string, Memorizer>> &symbolTable)
 int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Token> &derivation)
 {
     int positionID;
-    string variableName = derivation[positionID].content;
+    string variableName;
 
     if (derivation[0].symbol.compare("int") == 0)
     {
@@ -100,6 +100,7 @@ int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Toke
         temporary.pointerType = TYPE_INT;
         temporary.pointer = malloc(sizeof(int));
 
+        variableName = derivation[positionID].content;
         symbolTable.back()[variableName] = temporary;        
     }
     else if (derivation[0].symbol.compare("long") == 0)
@@ -110,6 +111,7 @@ int insertSymbolInTable(vector<map<string, Memorizer>> &symbolTable, vector<Toke
         temporary.pointerType = TYPE_LL_INT;
         temporary.pointer = malloc(sizeof(long long int));
 
+        variableName = derivation[positionID].content;
         symbolTable.back()[variableName] = temporary;
     }
     else
