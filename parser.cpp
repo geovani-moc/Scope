@@ -95,7 +95,7 @@ vector<vector<Token>> parser(vector<Token> &tokens, vector<Rule> &rules, vector<
 
 bool acceptGrammar(int currentState, int position, vector<Token> &stack)
 {
-    int acceptState = 5;
+    int acceptState = 0;
     if ((currentState == acceptState) && (stack[position].symbol.compare("$") == 0)) return true;
 
     return false;
