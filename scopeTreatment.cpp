@@ -182,18 +182,15 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
         break;
 
     case 2: // EO
-        position = stoi(derivation[position+1].content);
-        temporary = expression(parserTree, position+1, symbolTable);
-        return operation(parserTree, position + 1, symbolTable, temporary);
+        int derivationPosition = stoi(derivation[position].content);
+        temporary = expression(parserTree, derivationPosition, symbolTable);
 
-        break;
+        derivationPosition = stoi(derivation[position+1].content);
+        return operation(parserTree, derivationPosition, symbolTable, temporary);
 
     case 3: // (E)
-        position++;
-        position = stoi(derivation[position].content);
-        return expression(parserTree, position, symbolTable);
-
-        break;
+        int derivationPosition = stoi(derivation[position+1].content);
+        return expression(parserTree, derivationPosition, symbolTable);
 
     default:
         fprintf(stderr, "Erro: expressao nao esperada.\n");
