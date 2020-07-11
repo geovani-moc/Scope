@@ -1,42 +1,45 @@
 {
-int
-ID a
+long long int
+ID codigo
 ;
 int
-ID b
+ID ajuste
 ;
-int
-ID c
-;
-ID a
+ID codigo
 =
-NUM 10
+NUM 5
 ;
-ID b
+ID ajuste
 =
-NUM 2
-*
-NUM 10
+NUM 40
 ;
 {
 int
-ID a
+ID ajuste
 ;
-ID a
+ID ajuste
 =
-NUM 3
+NUM 30
 ;
-ID c
+ID codigo
 =
-ID b
+ID ajuste
 +
-ID a
+ID ajuste
+*
+ID codigo
+/
+(
+NUM 2
++
+NUM 8
+)
 ;
 }
-ID b
+ID codigo
 =
-ID c
-+
-ID a
+ID codigo
+-
+ID ajuste
 ;
 }
