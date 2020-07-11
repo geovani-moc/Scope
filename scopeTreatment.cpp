@@ -159,7 +159,7 @@ void performOperation(
             (*(long long int *)expression(parserTree, positionDerivation, symbolTable, TYPE_LL_INT));
     }
 
-    // imprimir atribuicao
+    // imprimi sempre que existir uma atribuicao
     if (symbolTable.back()[variableName].pointerType == TYPE_INT)
     {
         printf("%s = %d\n", variableName.c_str(), *(int *)symbolTable.back()[variableName].pointer);
@@ -267,7 +267,7 @@ void *operation(
     int derivationPosition = stoi(derivation[1].content);
 
     void* value2;
-    value2 = expression(parserTree, derivationPosition, symbolTable, pointerType); // tem que modificar varible name?
+    value2 = expression(parserTree, derivationPosition, symbolTable, pointerType); 
 
     long long int operating1;
     long long int operating2;
