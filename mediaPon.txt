@@ -1,0 +1,31 @@
+{
+    long long int media;
+    int peso;
+    int v1;
+    int v2;
+    int v3;
+    int v4;
+    int v5;
+    int v6;
+    int v7;
+    int v8;
+    int v9;
+    int v10;
+    peso = 10;
+    v1 = 20;
+    v2 = 25;
+    v3 = 15;
+    v4 = 13;
+    v5 = 37;
+    v6 = 45;
+    v7 = 11;
+    v8 = 100;
+    v9 = 10;
+    v10 = 9;
+    media = (v1+v2+v3+v4+v5+v6+v7+v8+v9+v10)/10;
+    {
+        int mediaPon;
+        int v11;
+        mediaPon = (media*peso + v11)/(peso + 1);
+    }
+}
