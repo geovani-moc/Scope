@@ -143,6 +143,16 @@ void performOperation(
     int positionDerivation = stoi(derivation[position + 2].content);
 
     symbolTable.back()[variableName] = expression(parserTree, positionDerivation, symbolTable);
+
+    // imprimir atribuicao
+    if (symbolTable.back()[variableName].pointerType == TYPE_INT)
+    {
+        printf("%s = %d\n",variableName.c_str(), *(int*)symbolTable.back()[variableName].pointer);
+    }
+    else
+    {
+        printf("%s = %lld\n",variableName.c_str(), *(long long int*)symbolTable.back()[variableName].pointer);
+    }
 }
 
 Memorizer expression(vector<vector<Token>> &parserTree, int position,
