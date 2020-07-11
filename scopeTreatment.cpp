@@ -172,6 +172,7 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
         {
             string symbol = derivation[position].content;
             temporary = symbolTable.back()[symbol];
+            temporary.pointerType = TYPE_INT;
 
             return temporary;
         }
@@ -207,7 +208,7 @@ Memorizer operation(
 {
     vector<Token> derivation = parserTree[position];
     char option = derivation[0].symbol[0];
-    int derivationPosition = stoi(derivation[position+1].content);
+    int derivationPosition = stoi(derivation[1].content);
 
     Memorizer temporary2 = expression(parserTree, derivationPosition, symbolTable);
 
@@ -267,7 +268,7 @@ Memorizer operation(
     }
     else
     {
-        (*(long long int *)(temporary.pointer)) = operating1;
+        (*(long long int *)temporary.pointer) = operating1;
     }
 
     return temporary;
