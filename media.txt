@@ -1,0 +1,88 @@
+{
+    int media;
+    int quant;
+    int aux;
+    int v1;
+    int v2;
+    int v3;
+    int v4;
+    int v5;
+    int v6;
+    int v7;
+    int v8;
+    int v9;
+    int v10;
+    v1 = 20;
+    v2 = 30;
+    v3 = 10;
+    v4 = 60;
+    v5 = 5;
+    v6 = 25;
+    v7 = 4;
+    v8 = 46;
+    v9 = 115;
+    v10 = 5;
+    media = 0;
+    quant = 0;
+    aux = 0;
+    {
+        int media;
+        media = v1;
+        aux = media;
+        quant = quant + 1;
+        {
+            int media;
+            media = (aux*quant + v2)/(quant+1);
+            aux = media;
+            quant = quant +1;
+            {
+                int media;
+                media = (aux*quant + v3)/(quant+1);
+                aux = media;
+                quant = quant +1;
+                {
+                    int media;
+                    media = (aux*quant + v4)/(quant+1);
+                    aux = media;
+                    quant = quant +1;
+                    {
+                        int media;
+                        media = (aux*quant + v5)/(quant+1);
+                        aux = media;
+                        quant = quant +1;
+                        {
+                            int media;
+                            media = (aux*quant + v6)/(quant+1);
+                            aux = media;
+                            quant = quant +1;
+                            {
+                                int media;
+                                media = (aux*quant + v7)/(quant+1);
+                                aux = media;
+                                quant = quant +1;
+                                {
+                                    int media;
+                                    media = (aux*quant + v8)/(quant+1);
+                                    aux = media;
+                                    quant = quant +1;
+                                    {
+                                        int media;
+                                        media = (aux*quant + v9)/(quant+1);
+                                        aux = media;
+                                        quant = quant +1;
+                                        {
+                                            int media;
+                                            media = (aux*quant + v10)/(quant+1);
+                                            aux = media;
+                                            quant = quant +1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
