@@ -14,6 +14,8 @@ int main()
     const char *fileRules = "rules.txt";
     const char *fileTransitions = "transitions.txt";
 
+    //arquivos de entrada devem ter uma quebra de linha no final
+
     Token lastToken = {"$", "", -1};
     vector<Token> tokens = readTokens(fileTokens);
     tokens.push_back(lastToken);
