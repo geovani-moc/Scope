@@ -149,7 +149,6 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
                      vector<map<string, Memorizer>> &symbolTable)
 {
     Memorizer temporary;
-
     vector<Token> derivation = parserTree[position];
 
     position = 0;
@@ -168,7 +167,7 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
 
             return temporary;
         }
-        else if (derivation[position].content.compare("ID") == 0)
+        else if (derivation[position].symbol.compare("ID") == 0)
         {
             string symbol = derivation[position].content;
             temporary = symbolTable.back()[symbol];
@@ -176,7 +175,7 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
 
             return temporary;
         }
-        else if (derivation[position].content.compare("STRING") == 0)
+        else if (derivation[position].symbol.compare("STRING") == 0)
         {
             fprintf(stderr, "Erro: tentativa de atribuir uma strig a um inteiro.\n");
             exit(EXIT_FAILURE);
