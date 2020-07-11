@@ -154,6 +154,7 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
 
     position = 0;
     int size = (int)derivation.size();
+    int derivationPosition;
 
     switch (size)
     {
@@ -182,14 +183,14 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
         break;
 
     case 2: // EO
-        int derivationPosition = stoi(derivation[position].content);
+        derivationPosition = stoi(derivation[position].content);
         temporary = expression(parserTree, derivationPosition, symbolTable);
 
         derivationPosition = stoi(derivation[position+1].content);
         return operation(parserTree, derivationPosition, symbolTable, temporary);
 
     case 3: // (E)
-        int derivationPosition = stoi(derivation[position+1].content);
+        derivationPosition = stoi(derivation[position+1].content);
         return expression(parserTree, derivationPosition, symbolTable);
 
     default:
@@ -206,8 +207,9 @@ Memorizer operation(
 {
     vector<Token> derivation = parserTree[position];
     char option = derivation[0].symbol[0];
+    int derivationPosition = stoi(derivation[position+1].content);
 
-    Memorizer temporary2 = expression(parserTree, position + 1, symbolTable);
+    Memorizer temporary2 = expression(parserTree, derivationPosition, symbolTable);
 
     long long int operating1;
     long long int operating2;
