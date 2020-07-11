@@ -142,24 +142,40 @@ void performOperation(
     }
     int positionDerivation = stoi(derivation[position + 2].content);
 
-    symbolTable.back()[variableName] = expression(parserTree, positionDerivation, symbolTable);
+    if (symbolTable.back()[variableName].pointer == NULL)
+    {
+        fprintf(stderr, "Erro: variavel nao declarada.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (symbolTable.back()[variableName].pointerType == TYPE_INT)
+    {
+        (*(int *)symbolTable.back()[variableName].pointer) =
+            (*(int *)expression(parserTree, positionDerivation, symbolTable, TYPE_INT));
+    }
+    else
+    {
+        (*(long long int *)symbolTable.back()[variableName].pointer) =
+            (*(long long int *)expression(parserTree, positionDerivation, symbolTable, TYPE_LL_INT));
+    }
 
     // imprimir atribuicao
     if (symbolTable.back()[variableName].pointerType == TYPE_INT)
     {
-        printf("%s = %d\n",variableName.c_str(), *(int*)symbolTable.back()[variableName].pointer);
+        printf("%s = %d\n", variableName.c_str(), *(int *)symbolTable.back()[variableName].pointer);
     }
     else
     {
-        printf("%s = %lld\n",variableName.c_str(), *(long long int*)symbolTable.back()[variableName].pointer);
+        printf("%s = %lld\n", variableName.c_str(), *(long long int *)symbolTable.back()[variableName].pointer);
     }
 }
 
-Memorizer expression(vector<vector<Token>> &parserTree, int position,
-                     vector<map<string, Memorizer>> &symbolTable)
+void *expression(vector<vector<Token>> &parserTree, int position,
+                 vector<map<string, Memorizer>> &symbolTable,
+                 int pointerType)
 {
-    Memorizer temporary;
     vector<Token> derivation = parserTree[position];
+    void *value = NULL;
 
     position = 0;
     int size = (int)derivation.size();
@@ -170,22 +186,50 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
     case 1: // NUM , ID, STRING
         if (derivation[position].symbol.compare("NUM") == 0)
         {
-            temporary.pointerType = TYPE_INT;
-            void *temporaryInt = malloc(sizeof(int));
-            (*(int *)temporaryInt) = stoi(derivation[position].content);
-            temporary.pointer = temporaryInt;
-
-            return temporary;
+            if (pointerType == TYPE_INT)
+            {
+                value = malloc(sizeof(int));
+                (*(int *)value) = stoi(derivation[position].content);
+            }
+            else
+            {
+                value = malloc(sizeof(long long int));
+                (*(long long int *)value) = stoll(derivation[position].content);
+            }
+            return value;
         }
         else if (derivation[position].symbol.compare("ID") == 0)
         {
-            string symbol = derivation[position].content;
-            temporary = symbolTable.back()[symbol];
-            if (temporary.pointerType != TYPE_INT && temporary.pointerType != TYPE_LL_INT)
+            string variableName = derivation[position].content;
+            int pointerType2 = symbolTable.back()[variableName].pointerType;
+
+            if (pointerType == TYPE_INT && pointerType2 == TYPE_INT)
             {
-                temporary.pointerType = TYPE_INT;
+                value = malloc(sizeof(int));
+                (*(int *)value) = *(int *)symbolTable.back()[variableName].pointer;
             }
-            return temporary;
+            else if (pointerType == TYPE_INT && pointerType2 == TYPE_LL_INT)
+            {
+                value = malloc(sizeof(int));
+                (*(int *)value) = (int)(*(long long int *)symbolTable.back()[variableName].pointer);
+            }
+            else if (pointerType == TYPE_LL_INT && pointerType2 == TYPE_INT)
+            {
+                value = malloc(sizeof(long long int));
+                (*(long long int *)value) = (long long int)(*(int *)symbolTable.back()[variableName].pointer);
+            }
+            else if (pointerType == TYPE_LL_INT && pointerType2 == TYPE_LL_INT)
+            {
+                value = malloc(sizeof(long long int));
+                (*(long long int *)value) = *(long long int *)symbolTable.back()[variableName].pointer;
+            }
+            else
+            {
+                fprintf(stderr, "Erro tipo de variavel nao detectado");
+                exit(EXIT_FAILURE);
+            }
+
+            return value;
         }
         else if (derivation[position].symbol.compare("STRING") == 0)
         {
@@ -196,45 +240,48 @@ Memorizer expression(vector<vector<Token>> &parserTree, int position,
 
     case 2: // EO
         derivationPosition = stoi(derivation[position].content);
-        temporary = expression(parserTree, derivationPosition, symbolTable);
+        value = expression(parserTree, derivationPosition, symbolTable, pointerType);
 
         derivationPosition = stoi(derivation[position + 1].content);
-        return operation(parserTree, derivationPosition, symbolTable, temporary);
+        return operation(parserTree, derivationPosition, symbolTable, value, pointerType);
 
     case 3: // (E)
         derivationPosition = stoi(derivation[position + 1].content);
-        return expression(parserTree, derivationPosition, symbolTable);
+        return expression(parserTree, derivationPosition, symbolTable, pointerType);
 
     default:
         fprintf(stderr, "Erro: expressao nao esperada.\n");
         exit(EXIT_FAILURE);
     }
 
-    return temporary;
+    return value;
 }
 
-Memorizer operation(
+void *operation(
     vector<vector<Token>> &parserTree, int position,
-    vector<map<string, Memorizer>> &symbolTable, Memorizer temporary)
+    vector<map<string, Memorizer>> &symbolTable,
+    void* value, int pointerType)
 {
     vector<Token> derivation = parserTree[position];
     char option = derivation[0].symbol[0];
     int derivationPosition = stoi(derivation[1].content);
 
-    Memorizer temporary2 = expression(parserTree, derivationPosition, symbolTable);
+    void* value2;
+    value2 = expression(parserTree, derivationPosition, symbolTable, pointerType); // tem que modificar varible name?
 
     long long int operating1;
     long long int operating2;
 
-    if (temporary.pointerType == TYPE_INT)
-        operating1 = (long long int)(*(int *)temporary.pointer);
+    if (pointerType == TYPE_INT)
+    {
+        operating1 = (long long int)(*(int *)value);
+        operating2 = (long long int)(*(int*) value2);
+    }
     else
-        operating1 = (*(long long int *)temporary.pointer);
-
-    if (temporary2.pointerType == TYPE_INT)
-        operating2 = (long long int)(*(int *)temporary2.pointer);
-    else
-        operating2 = (*(long long int *)temporary2.pointer);
+    {
+        operating1 = (*(long long int *)value);
+        operating2 = (*(long long int *)value2);
+    }
 
     switch (option)
     {
@@ -273,14 +320,14 @@ Memorizer operation(
         exit(EXIT_FAILURE);
     }
 
-    if (temporary.pointerType == TYPE_INT)
+    if (pointerType == TYPE_INT)
     {
-        (*(int *)(temporary.pointer)) = (int)operating1;
+        (*(int *)(value)) = (int)operating1;
     }
     else
     {
-        (*(long long int *)temporary.pointer) = operating1;
+        (*(long long int *)value) = operating1;
     }
 
-    return temporary;
+    return value;
 }

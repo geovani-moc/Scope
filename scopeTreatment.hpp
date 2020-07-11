@@ -15,6 +15,8 @@ typedef struct Memorizer
 {
     void *pointer;
     int pointerType;
+    Memorizer():pointer(NULL)
+    {    }
 } Memorizer;
 
 void scopeTreatment(vector<vector<Token>> &parserTree);
@@ -33,10 +35,11 @@ void performOperation(
     vector<vector<Token>> &parserTree,
     vector<Token> &derivation, int position,
     vector<map<string, Memorizer>> &symbolTable);
-Memorizer expression(vector<vector<Token>> &parserTree, int position,
-                     vector<map<string, Memorizer>> &symbolTable);
-Memorizer operation(
+void* expression(vector<vector<Token>> &parserTree, int position,
+                     vector<map<string, Memorizer>> &symbolTable,
+                     int pointerType);
+void* operation(
     vector<vector<Token>> &parserTree, int position,
     vector<map<string, Memorizer>> &symbolTable,
-    Memorizer temporary);
+    void * value, int pointerType);
 #endif
