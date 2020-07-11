@@ -1,47 +1,391 @@
 {
-long
-long
 int
-ID codigo
+ID media
 ;
 int
-ID ajuste
+ID quant
 ;
-ID codigo
+int
+ID aux
+;
+int
+ID v1
+;
+int
+ID v2
+;
+int
+ID v3
+;
+int
+ID v4
+;
+int
+ID v5
+;
+int
+ID v6
+;
+int
+ID v7
+;
+int
+ID v8
+;
+int
+ID v9
+;
+int
+ID v10
+;
+ID v1
 =
-NUM 5
+NUM 20
 ;
-ID ajuste
-=
-NUM 40
-;
-{
-int
-ID ajuste
-;
-ID ajuste
+ID v2
 =
 NUM 30
 ;
-ID codigo
+ID v3
 =
-ID ajuste
+NUM 10
+;
+ID v4
+=
+NUM 60
+;
+ID v5
+=
+NUM 5
+;
+ID v6
+=
+NUM 25
+;
+ID v7
+=
+NUM 4
+;
+ID v8
+=
+NUM 46
+;
+ID v9
+=
+NUM 115
+;
+ID v10
+=
+NUM 5
+;
+ID media
+=
+NUM 0
+;
+ID quant
+=
+NUM 0
+;
+ID aux
+=
+NUM 0
+;
+{
+int
+ID media
+;
+ID media
+=
+ID v1
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
 +
-ID ajuste
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
 *
-ID codigo
+ID quant
++
+ID v2
+)
 /
 (
-NUM 2
+ID quant
 +
-NUM 8
+NUM 1
 )
 ;
-}
-ID codigo
+ID aux
 =
-ID codigo
--
-ID ajuste
+ID media
 ;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v3
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v4
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v5
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v6
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v7
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v8
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v9
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+{
+int
+ID media
+;
+ID media
+=
+(
+ID aux
+*
+ID quant
++
+ID v10
+)
+/
+(
+ID quant
++
+NUM 1
+)
+;
+ID aux
+=
+ID media
+;
+ID quant
+=
+ID quant
++
+NUM 1
+;
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
 }
